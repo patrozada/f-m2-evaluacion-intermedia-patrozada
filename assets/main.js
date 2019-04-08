@@ -12,14 +12,9 @@ console.log(numberToGuess);
 //función contador
 const counterEl = document.querySelector('.counter--output');
 
-const defaultAttempt = 0;
-counterEl.innerHTML = defaultAttempt;
+let defaultValue = 0;
+counterEl.innerHTML = defaultValue;
 
-function counter(){
-    const newAttempt = defaultAttempt+1;
-    
-    counterEl.innerHTML =newAttempt;
-}
 
 //Función que compara el input de la usuaria con el número aleatorio.
 const inputEl = document.querySelector('.user--guess');
@@ -29,7 +24,8 @@ const clueEl = document.querySelector('.clue');
 
 function handleClickButton(event){
     event.preventDefault();
-    counter();
+    defaultValue += 1;
+    counterEl.innerHTML = defaultValue;
     const inputToInt= parseInt(inputEl.value)
 
     if(inputToInt === numberToGuess){
