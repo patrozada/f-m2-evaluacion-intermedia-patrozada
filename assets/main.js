@@ -8,19 +8,37 @@ function getRandomNumber(max) {
 
 const numberToGuess = getRandomNumber(100);
 console.log(numberToGuess);
-//hago una función que me lea el input del usuario (lo tiene que convertir a integer) y lo compare con el número que he generado previamente
-    //son 3 casos que desencadenan 3 mensajes en el párrafo azul
-        //el número es mayor que el input
-        //el número es menor que input
-        //el número es igual que input
+
+//función contador
+const counterEl = document.querySelector('.counter--output');
+
+const defaultAttempt = 0;
+counterEl.innerHTML = defaultAttempt;
+
+function counter(){
+    const newAttempt = defaultAttempt+1;
+    
+    counterEl.innerHTML =newAttempt;
+}
+
+//Función que compara el input de la usuaria con el número aleatorio.
 const inputEl = document.querySelector('.user--guess');
 const buttonEl = document.querySelector('.try');
+const clueEl = document.querySelector('.clue');
 
 
 function handleClickButton(event){
     event.preventDefault();
+    counter();
     const inputToInt= parseInt(inputEl.value)
-    console.log(inputToInt);
+
+    if(inputToInt === numberToGuess){
+        clueEl.innerHTML = "!!!Enhorabuena, has acertado!!!"
+    }else if(inputToInt < numberToGuess){
+        clueEl.innerHTML = "Te has quedado corta, el número es mayor"
+    }else{
+        clueEl.innerHTML = "Te has pasado, el número es menor"
+    }
 }
 buttonEl.addEventListener('click', handleClickButton);
 //por cada vez que el usuario pulse el botón, el contador de intentos sube 1. Puedo anidar esta fundión para que solo sea un listener y un handler?
