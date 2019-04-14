@@ -1,40 +1,62 @@
 'use strict';
-console.log('Ready');
-
-//genero un número random y lo guardo en una constante.(lo imprimo en console)
-function getRandomNumber(max) {
-    return Math.ceil(Math.random() * max);
-  }
 
 const numberToGuess = getRandomNumber(100);
+
 console.log(numberToGuess);
 
-//función contador
-const counterEl = document.querySelector('.counter--output');
-
-let defaultValue = 0;
-counterEl.innerHTML = defaultValue;
-
-
-//Función que compara el input de la usuaria con el número aleatorio.
 const inputEl = document.querySelector('.user--guess');
 const buttonEl = document.querySelector('.try');
 const clueEl = document.querySelector('.clue');
+const counterEl = document.querySelector('.counter--display');
+let clueContent = clueEl.innerHTML;
+let defaultValue = 0;
 
+const possibleFeedback = ["Escribe un número", "El número es mayor que 0", "¡¡¡Enhorabuena, has acertado!!!", "Te has quedado corta, el número es mayor" , "Te has pasado, el número es menor"]
 
-function handleClickButton(event){
-    event.preventDefault();
+counterEl.innerHTML= defaultValue;
+
+function getRandomNumber(max) {
+    return Math.ceil(Math.random() * max);
+  }
+function counter(){
     defaultValue += 1;
     counterEl.innerHTML = defaultValue;
-    const inputToInt= parseInt(inputEl.value)
+}
 
-    if(inputToInt === numberToGuess){
-        clueEl.innerHTML = "!!!Enhorabuena, has acertado!!!"
+function paintFeedback(a){
+    clueEl.innerHTML = possibleFeedback[a]
+}
+
+function getFeedback(){
+    const inputToInt = parseInt(inputEl.value);
+    if (!inputToInt){
+        paintFeedback(0) 
+    }else if(inputToInt <=0){
+        paintFeedback(1);
+    }else if(inputToInt === numberToGuess){
+        paintFeedback(2);
     }else if(inputToInt < numberToGuess){
-        clueEl.innerHTML = "Te has quedado corta, el número es mayor"
+        paintFeedback(3);
     }else{
-        clueEl.innerHTML = "Te has pasado, el número es menor"
+        paintFeedback(4);
     }
 }
-buttonEl.addEventListener('click', handleClickButton);
-//por cada vez que el usuario pulse el botón, el contador de intentos sube 1. Puedo anidar esta fundión para que solo sea un listener y un handler?
+function clearInput(){
+    inputEl.value = '';
+}
+function handleButtonClick(event){
+    event.preventDefault();
+    counter();
+    getFeedback();
+    clearInput();
+}
+
+function forceButtonClick(event){
+    event.preventDefault();
+    if (event.keycode===13){
+        buttonEl.click();
+    }
+};
+
+buttonEl.addEventListener('click', handleButtonClick);
+clueEl.addEventListener('focus', forceButtonClick);
